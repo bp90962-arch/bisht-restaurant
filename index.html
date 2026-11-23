@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garh Wali Singh Restaurant</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f5f0;
+    color: #292929;
+}
+
+/* HEADER */
+header {
+    background: #25160f;
+    color: white;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo h1 {
+    color: #ffbd59;
+    font-size: 27px;
+}
+
+.logo p {
+    font-size: 13px;
+    margin-top: 5px;
+    color: #eee;
+}
+
+.cart-button {
+    background: #e88b26;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* HERO */
+.hero {
+    min-height: 260px;
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400")
+    center/cover;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 35px 15px;
+}
+
+.hero h2 {
+    font-size: 38px;
+    color: #ffc36c;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    font-size: 17px;
+}
+
+/* MENU */
+.menu-section {
+    padding: 35px 5%;
+}
+
+.menu-heading {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.menu-heading h2 {
+    font-size: 30px;
+    color: #402216;
+}
+
+.menu-heading p {
+    color: #777;
+    margin-top: 8px;
+}
+
+.search-box {
+    display: block;
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+.categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.categories button {
+    padding: 11px 17px;
+    border: 1px solid #d58a39;
+    background: white;
+    color: #603719;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.categories button.active,
+.categories button:hover {
+    background: #8c431d;
+    color: white;
+}
+
+/* FOOD CARDS */
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+    max-width: 1250px;
+    margin: auto;
+}
+
+.food-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,.09);
+    transition: .25s;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 7px 20px rgba(0,0,0,.15);
+}
+
+.food-card img {
+    width: 100%;
+    height: 185px;
+    object-fit: cover;
+    display: block;
+    background: #eee;
+}
+
+.food-info {
+    padding: 16px;
+}
+
+.food-info h3 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.food-info p {
+    color: #777;
+    font-size: 13px;
+    min-height: 34px;
+    line-height: 1.5;
+}
+
+.food-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #a34e1d;
+}
+
+.add-btn {
+    background: #8c431d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: #54240f;
+}
+
+.food-type {
+    font-size: 11px;
+    color: green;
+    margin-bottom: 8px;
+}
+
+.food-type.nonveg {
+    color: #c52b2b;
+}
+
+.no-results {
+    text-align: center;
+    grid-column: 1/-1;
+    padding: 30px;
+}
+
+/* CART */
+.cart-section {
+    background: white;
+    max-width: 800px;
+    margin: 25px auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px #ddd;
+    display: none;
+}
+
+.cart-section h2 {
+    color: #572c19;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.quantity button {
+    padding: 5px 10px;
+    margin: 0 4px;
+    cursor: pointer;
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+}
+
+.remove-btn {
+    color: #c22;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.total {
+    text-align: right;
+    font-size: 23px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.checkout-btn {
+    background: #218838;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 18px;
+    font-size: 16px;
+}
+
+/* FOOTER */
+footer {
+    background: #25160f;
+    color: white;
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 45px;
+    line-height: 1.8;
+}
+
+@media(max-width:600px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 28px;
+    }
+
+    .food-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .food-card img {
+        height: 130px;
+    }
+
+    .food-info {
+        padding: 11px;
+    }
+
+    .food-info h3 {
+        font-size: 15px;
+    }
+
+    .food-info p {
+        font-size: 12px;
+    }
+
+    .price {
+        font-size: 16px;
+    }
+
+    .add-btn {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .menu-section {
+        padding: 25px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">
+        <h1>🍽️  बिष्ट गढ़वाली रेस्टोरेंट</h1>
+        <p>Bisht Garhwali Restaurant</p>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="qr-card.html" style="background: rgba(255,255,255,0.12); color: #ffbd59; padding: 12px 16px; border-radius: 7px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffbd59; display: inline-flex; align-items: center; gap: 6px;">
+            📱 QR Card
+        </a>
+        <button class="cart-button" onclick="toggleCart()">
+            🛒 Cart (<span id="cartCount">0</span>)
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div>
+        <h2>Welcome To Our Restaurant</h2>
+        <p>स्वाद ऐसा जो हमेशा याद रहे ❤️</p>
+        <p>Fresh Food | Best Quality | Great Taste</p>
+    </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section">
+
+    <div class="menu-heading">
+        <h2>Our Delicious Menu</h2>
+        <p>अपनी पसंद का खाना चुनें और ऑर्डर करें।</p>
+    </div>
+
+    <input
+        type="text"
+        id="search"
+        class="search-box"
+        placeholder="🔍 Search Food Items..."
+        oninput="renderMenu()"
+    >
+
+    <div class="categories" id="categories">
+        <button class="active" onclick="filterCategory('All',this)">All Items</button>
+        <button onclick="filterCategory('Fast Food',this)">🍕 Fast Food</button>
+        <button onclick="filterCategory('Chinese',this)">🍜 Chinese</button>
+        <button onclick="filterCategory('Veg',this)">🥗 Veg Food</button>
+        <button onclick="filterCategory('Non-Veg',this)">🍗 Non-Veg</button>
+        <button onclick="filterCategory('Egg',this)">🥚 Egg Special</button>
+        <button onclick="filterCategory('Drinks',this)">🥤 Drinks</button>
+        <button onclick="filterCategory('Desserts',this)">🍰 Desserts</button>
+    </div>
+
+    <div class="food-grid" id="foodGrid"></div>
+
+</section>
+
+<!-- CART -->
+<section class="cart-section" id="cartSection">
+
+    <h2>🛒 Your Shopping Cart</h2>
+
+    <div id="cartItems"></div>
+
+    <div class="total">
+        Total: ₹<span id="totalPrice">0</span>
+    </div>
+
+    <button class="checkout-btn" onclick="checkout()">
+        Place Order
+    </button>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <h2>बिष्ट गढ़वाली रेस्टोरेंट</h2>
+    <p>आपका स्वागत है ❤️</p>
+    <p>Fresh Food | Best Service | Happy Customers</p>
+    <p>© Bisht Garhwali Restaurant</p>
+    <p style="margin-top: 12px;"><a href="qr-card.html" style="color: #ffbd59; text-decoration: none; font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.08); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,189,89,0.4);">📱 View Live QR Code & Project Submission Card</a></p>
+</footer>
+
+<script>
+
+// FOOD MENU DATA
+
+const foods = [
+
+{
+id:1, name:"Veg Burger", price:79,
+category:"Fast Food",
+description:"Fresh vegetables and tasty burger.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1520072959219-c595dc870360?w=600"
+},
+
+{
+id:2, name:"Cheese Burger", price:99,
+category:"Fast Food",
+description:"Delicious burger with extra cheese.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"
+},
+
+{
+id:3, name:"Veg Pizza", price:179,
+category:"Fast Food",
+description:"Pizza loaded with fresh vegetables.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600"
+},
+
+{
+id:4, name:"Cheese Pizza", price:199,
+category:"Fast Food",
+description:"Cheesy pizza with delicious toppings.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600"
+},
+
+{
+id:5, name:"French Fries", price:79,
+category:"Fast Food",
+description:"Crispy golden potato fries.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600"
+},
+
+{
+id:6, name:"Veg Sandwich", price:89,
+category:"Fast Food",
+description:"Fresh and tasty vegetable sandwich.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600"
+},
+
+{
+id:7, name:"Veg Momos", price:80,
+category:"Chinese",
+description:"Steamed vegetable momos.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600"
+},
+
+{
+id:8, name:"Fried Momos", price:100,
+category:"Chinese",
+description:"Crispy fried momos with chutney.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?w=600"
+},
+
+{
+id:9, name:"Veg Chowmein", price:100,
+category:"Chinese",
+description:"Noodles with fresh vegetables.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600"
+},
+
+{
+id:10, name:"Hakka Noodles", price:120,
+category:"Chinese",
+description:"Chinese style spicy noodles.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600"
+},
+
+{
+id:11, name:"Samosa", price:40,
+category:"Chinese",
+description:"Vegetable balls in Manchurian sauce.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600"
+},
+
+{
+id:12, name:"Paneer Butter Masala", price:199,
+category:"Veg",
+description:"Paneer cooked in creamy tomato gravy.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600"
+},
+
+{
+id:13, name:"Veg Thali", price:160,
+category:"Veg",
+description:"Rich and creamy traditional dal.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600"
+},
+
+{
+id:14, name:"Palak Paneer", price:199,
+category:"Veg",
+description:"Royal paneer curry with rich gravy.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=600"
+},
+
+{
+id:15, name:"Idli", price:150,
+category:"Veg",
+description:"Mixed seasonal vegetables.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600"
+},
+
+{
+id:16, name:"Chicken Biryani", price:200,
+category:"Non-Veg",
+description:"Aromatic rice with delicious chicken.",
+type:"nonveg",
+image:"https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=600"
+},
+
+{
+id:17, name:"Butter Chicken", price:299,
+category:"Non-Veg",
+description:"Chicken in creamy butter gravy.",
+type:"nonveg",
+image:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600"
+},
+
+{
+id:18, name:"Chicken Tikka", price:249,
+category:"Non-Veg",
+description:"Delicious tandoori chicken tikka.",
+type:"nonveg",
+image:"https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600"
+},
+
+{
+id:19, name:"Chicken Curry", price:299,
+category:"Non-Veg",
+description:"Traditional Indian chicken curry.",
+type:"nonveg",
+image:"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/FOOD_CATALOG/IMAGES/CMS/2025/9/11/da6c48c3-2977-4227-8bb3-056da6cd7e8d_e7e1ec05-b90f-412b-be44-3c2d86488d3c.jpg"
+},
+
+{
+id:20, name:"Chicken Fried Rice", price:249,
+category:"Non-Veg",
+description:"Fried rice with chicken and spices.",
+type:"nonveg",
+image:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600"
+},
+
+{
+id:21, name:"Egg Curry", price:199,
+category:"Egg",
+description:"Boiled eggs in spicy Indian gravy.",
+type:"nonveg",
+image:"https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600"
+},
+
+{
+id:22, name:"Cold Coffee", price:90,
+category:"Drinks",
+description:"Chilled and creamy cold coffee.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600"
+},
+
+{
+id:23, name:"Fresh Lime Soda", price:50,
+category:"Drinks",
+description:"Refreshing fresh lime soda.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=600"
+},
+
+{
+id:24, name:"Chocolate Cake", price:249,
+category:"Desserts",
+description:"Delicious chocolate dessert.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600"
+},
+
+{
+id:25, name:"Ice Cream", price:60,
+category:"Desserts",
+description:"Sweet and creamy ice cream.",
+type:"veg",
+image:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600"
+}
+
+];
+
+// CART DATA
+
+let cart = [];
+let currentCategory = "All";
+
+// DISPLAY MENU
+
+function renderMenu() {
+
+    const grid = document.getElementById("foodGrid");
+    const search = document.getElementById("search").value.toLowerCase();
+
+    const filtered = foods.filter(food => {
+
+        const categoryMatch =
+            currentCategory === "All" ||
+            food.category === currentCategory;
+
+        const searchMatch =
+            food.name.toLowerCase().includes(search);
+
+        return categoryMatch && searchMatch;
+    });
+
+    grid.innerHTML = "";
+
+    if(filtered.length === 0) {
+        grid.innerHTML = '<h3 class="no-results">No food items found!</h3>';
+        return;
+    }
+
+    filtered.forEach(food => {
+
+        const typeLabel = food.type === "veg"
+            ? "🟢 VEG"
+            : "🔴 NON-VEG";
+
+        const typeClass = food.type === "veg"
+            ? ""
+            : "nonveg";
+
+        grid.innerHTML += `
+
+        <div class="food-card">
+
+            <img
+                src="${food.image}"
+                alt="${food.name}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x400/f1e5d6/57351f?text=Food+Photo';"
+            >
+
+            <div class="food-info">
+
+                <div class="food-type ${typeClass}">
+                    ${typeLabel}
+                </div>
+
+                <h3>${food.name}</h3>
+
+                <p>${food.description}</p>
+
+                <div class="food-bottom">
+
+                    <span class="price">₹${food.price}</span>
+
+                    <button
+                        class="add-btn"
+                        onclick="addToCart(${food.id})">
+                        + Add
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+    });
+
+}
+
+// CATEGORY FILTER
+
+function filterCategory(category, button) {
+
+    currentCategory = category;
+
+    document.querySelectorAll(".categories button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderMenu();
+}
+
+// ADD TO CART
+
+function addToCart(id) {
+
+    const food = foods.find(item => item.id === id);
+
+    const existing = cart.find(item => item.id === id);
+
+    if(existing) {
+        existing.quantity++;
+    } else {
+        cart.push({
+            ...food,
+            quantity:1
+        });
+    }
+
+    updateCart();
+
+}
+
+// UPDATE CART
+
+function updateCart() {
+
+    const cartItems = document.getElementById("cartItems");
+
+    cartItems.innerHTML = "";
+
+    let total = 0;
+    let count = 0;
+
+    cart.forEach(item => {
+
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+        cartItems.innerHTML += `
+
+        <div class="cart-item">
+
+            <div>
+                <strong>${item.name}</strong>
+                <br>
+                ₹${item.price} × ${item.quantity}
+            </div>
+
+            <div class="quantity">
+
+                <button onclick="changeQty(${item.id},-1)">−</button>
+
+                ${item.quantity}
+
+                <button onclick="changeQty(${item.id},1)">+</button>
+
+            </div>
+
+            <button class="remove-btn"
+                onclick="removeItem(${item.id})">
+                Remove
+            </button>
+
+        </div>
+
+        `;
+    });
+
+    document.getElementById("totalPrice").innerText = total;
+
+    document.getElementById("cartCount").innerText = count;
+
+    if(cart.length === 0) {
+        cartItems.innerHTML = "<p>Your cart is empty.</p>";
+    }
+
+}
+
+// CHANGE QUANTITY
+
+function changeQty(id, change) {
+
+    const item = cart.find(item => item.id === id);
+
+    if(!item) return;
+
+    item.quantity += change;
+
+    if(item.quantity <= 0) {
+        cart = cart.filter(item => item.id !== id);
+    }
+
+    updateCart();
+}
+
+// REMOVE ITEM
+
+function removeItem(id) {
+
+    cart = cart.filter(item => item.id !== id);
+
+    updateCart();
+}
+
+// SHOW / HIDE CART
+
+function toggleCart() {
+
+    const section = document.getElementById("cartSection");
+
+    if(section.style.display === "block") {
+        section.style.display = "none";
+    } else {
+        section.style.display = "block";
+
+        section.scrollIntoView({
+            behavior:"smooth"
+        });
+    }
+}
+
+// DEMO CHECKOUT
+
+function checkout() {
+
+    if(cart.length === 0) {
+        alert("Please add food items first!");
+        return;
+    }
+
+    let orderDetails = cart.map(item =>
+        item.name + " x " + item.quantity
+    ).join("\n");
+
+    let total = cart.reduce(
+        (sum,item) => sum + item.price * item.quantity, 0
+    );
+
+    alert(
+        "Your Order Summary\n\n" +
+        orderDetails +
+        "\n\nTotal Amount: ₹" + total +
+        "\n\nDemo order placed successfully!"
+    );
+
+}
+
+// INITIAL LOAD
+
+renderMenu();
+updateCart();
+
+</script>
+
+</body>
+</html>
