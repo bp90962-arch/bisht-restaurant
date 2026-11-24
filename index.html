@@ -281,6 +281,154 @@ header {
     font-size: 16px;
 }
 
+/* CUSTOMIZATION MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    animation: popIn .22s ease;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.modal-item-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #25160f;
+    margin-bottom: 4px;
+}
+
+.modal-item-price {
+    color: #a34e1d;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.modal-section-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+/* SPICE OPTIONS */
+.spice-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.spice-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 10px 8px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    transition: .18s;
+}
+
+.spice-btn:hover           { border-color: #e88b26; color: #e88b26; }
+.spice-btn.selected        { border-color: #e88b26; background: #fff4e6; color: #c06010; }
+.spice-btn[data-spice="Light"].selected   { border-color: #3aaa35; background: #e9fce8; color: #2a7d26; }
+.spice-btn[data-spice="Normal"].selected  { border-color: #e88b26; background: #fff4e6; color: #c06010; }
+.spice-btn[data-spice="High"].selected    { border-color: #d9230f; background: #fde9e7; color: #b81d09; }
+
+/* CHEESE OPTIONS */
+.cheese-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.cheese-btn {
+    flex: 1;
+    padding: 10px 10px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    transition: .18s;
+}
+
+.cheese-btn:hover    { border-color: #f5c518; color: #9a7c00; }
+.cheese-btn.selected { border-color: #f5c518; background: #fffbe6; color: #9a7c00; }
+
+.cheese-extra-tag {
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+    color: #c06010;
+    margin-top: 2px;
+}
+
+/* MODAL ACTIONS */
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #555;
+}
+
+.btn-add-confirm {
+    flex: 2;
+    padding: 12px;
+    border: none;
+    background: #8c431d;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn-add-confirm:hover { background: #54240f; }
+
 /* FOOTER */
 footer {
     background: #25160f;
@@ -414,6 +562,56 @@ footer {
 
 </section>
 
+<!-- CUSTOMIZATION MODAL -->
+<div class="modal-overlay" id="customModal">
+    <div class="modal-box">
+        <div class="modal-item-name" id="modalItemName"></div>
+        <div class="modal-item-price" id="modalItemPrice"></div>
+
+        <!-- SPICE LEVEL -->
+        <div id="spiceSection">
+        <div class="modal-section-title">🌶️ Spice Level</div>
+        <div class="spice-options">
+            <button class="spice-btn" data-spice="Light"  onclick="selectSpice(this)">🟢 Light<br><small>Halka</small></button>
+            <button class="spice-btn selected" data-spice="Normal" onclick="selectSpice(this)">🟡 Normal<br><small>Seedha</small></button>
+            <button class="spice-btn" data-spice="High"   onclick="selectSpice(this)">🔴 High<br><small>Teekha</small></button>
+        </div>
+        </div>
+
+        <!-- CHOCOLATE LEVEL (only for Chocolate Cake) -->
+        <div id="chocoSection" style="display:none;">
+        <div class="modal-section-title">🍫 Chocolate Level</div>
+        <div class="spice-options">
+            <button class="spice-btn" data-spice="Light Choco"  onclick="selectSpice(this)">🤎 Light<br><small>Halka</small></button>
+            <button class="spice-btn selected" data-spice="Normal Choco" onclick="selectSpice(this)">🍫 Normal<br><small>Normal</small></button>
+            <button class="spice-btn" data-spice="Dark Choco"   onclick="selectSpice(this)">🖤 Dark<br><small>Kadva</small></button>
+        </div>
+        </div>
+
+        <!-- CHEESE -->
+        <div id="cheeseSection">
+        <div class="modal-section-title">🧀 Cheese Option</div>
+        <div class="cheese-options">
+            <button class="cheese-btn selected" data-cheese="Normal" data-extra="0" onclick="selectCheese(this)">
+                🧀 Normal Cheese
+                <span class="cheese-extra-tag">Same Price</span>
+            </button>
+            <button class="cheese-btn" data-cheese="Extra" data-extra="25" onclick="selectCheese(this)">
+                🧀🧀 Extra Cheese
+                <span class="cheese-extra-tag">+₹25</span>
+            </button>
+        </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn-add-confirm" id="modalAddBtn" onclick="confirmAddToCart()">
+                Add to Cart →
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
     <h2>बिष्ट गढ़वाली रेस्टोरेंट</h2>
@@ -434,6 +632,7 @@ id:1, name:"Veg Burger", price:79,
 category:"Fast Food",
 description:"Fresh vegetables and tasty burger.",
 type:"veg",
+hasCheese:true,
 image:"https://images.unsplash.com/photo-1520072959219-c595dc870360?w=600"
 },
 
@@ -442,6 +641,7 @@ id:2, name:"Cheese Burger", price:99,
 category:"Fast Food",
 description:"Delicious burger with extra cheese.",
 type:"veg",
+hasCheese:true,
 image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"
 },
 
@@ -450,6 +650,7 @@ id:3, name:"Veg Pizza", price:179,
 category:"Fast Food",
 description:"Pizza loaded with fresh vegetables.",
 type:"veg",
+hasCheese:true,
 image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600"
 },
 
@@ -458,6 +659,7 @@ id:4, name:"Cheese Pizza", price:199,
 category:"Fast Food",
 description:"Cheesy pizza with delicious toppings.",
 type:"veg",
+hasCheese:true,
 image:"https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600"
 },
 
@@ -466,6 +668,7 @@ id:5, name:"French Fries", price:79,
 category:"Fast Food",
 description:"Crispy golden potato fries.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600"
 },
 
@@ -474,6 +677,7 @@ id:6, name:"Veg Sandwich", price:89,
 category:"Fast Food",
 description:"Fresh and tasty vegetable sandwich.",
 type:"veg",
+hasCheese:true,
 image:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600"
 },
 
@@ -482,6 +686,7 @@ id:7, name:"Veg Momos", price:80,
 category:"Chinese",
 description:"Steamed vegetable momos.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600"
 },
 
@@ -490,6 +695,7 @@ id:8, name:"Fried Momos", price:100,
 category:"Chinese",
 description:"Crispy fried momos with chutney.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?w=600"
 },
 
@@ -498,6 +704,7 @@ id:9, name:"Veg Chowmein", price:100,
 category:"Chinese",
 description:"Noodles with fresh vegetables.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600"
 },
 
@@ -506,6 +713,7 @@ id:10, name:"Hakka Noodles", price:120,
 category:"Chinese",
 description:"Chinese style spicy noodles.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600"
 },
 
@@ -514,6 +722,7 @@ id:11, name:"Samosa", price:40,
 category:"Chinese",
 description:"Vegetable balls in Manchurian sauce.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600"
 },
 
@@ -522,6 +731,7 @@ id:12, name:"Paneer Butter Masala", price:199,
 category:"Veg",
 description:"Paneer cooked in creamy tomato gravy.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600"
 },
 
@@ -530,6 +740,7 @@ id:13, name:"Veg Thali", price:160,
 category:"Veg",
 description:"Rich and creamy traditional dal.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600"
 },
 
@@ -538,6 +749,7 @@ id:14, name:"Palak Paneer", price:199,
 category:"Veg",
 description:"Royal paneer curry with rich gravy.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=600"
 },
 
@@ -546,6 +758,7 @@ id:15, name:"Idli", price:150,
 category:"Veg",
 description:"Mixed seasonal vegetables.",
 type:"veg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600"
 },
 
@@ -554,6 +767,7 @@ id:16, name:"Chicken Biryani", price:200,
 category:"Non-Veg",
 description:"Aromatic rice with delicious chicken.",
 type:"nonveg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=600"
 },
 
@@ -562,6 +776,7 @@ id:17, name:"Butter Chicken", price:299,
 category:"Non-Veg",
 description:"Chicken in creamy butter gravy.",
 type:"nonveg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600"
 },
 
@@ -570,6 +785,7 @@ id:18, name:"Chicken Tikka", price:249,
 category:"Non-Veg",
 description:"Delicious tandoori chicken tikka.",
 type:"nonveg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600"
 },
 
@@ -578,7 +794,8 @@ id:19, name:"Chicken Curry", price:299,
 category:"Non-Veg",
 description:"Traditional Indian chicken curry.",
 type:"nonveg",
-image:"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/FOOD_CATALOG/IMAGES/CMS/2025/9/11/da6c48c3-2977-4227-8bb3-056da6cd7e8d_e7e1ec05-b90f-412b-be44-3c2d86488d3c.jpg"
+hasCheese:false,
+image:"https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=600"
 },
 
 {
@@ -586,6 +803,7 @@ id:20, name:"Chicken Fried Rice", price:249,
 category:"Non-Veg",
 description:"Fried rice with chicken and spices.",
 type:"nonveg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600"
 },
 
@@ -594,6 +812,7 @@ id:21, name:"Egg Curry", price:199,
 category:"Egg",
 description:"Boiled eggs in spicy Indian gravy.",
 type:"nonveg",
+hasCheese:false,
 image:"https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600"
 },
 
@@ -602,14 +821,18 @@ id:22, name:"Cold Coffee", price:90,
 category:"Drinks",
 description:"Chilled and creamy cold coffee.",
 type:"veg",
+hasCheese:false,
+hasSpice:false,
 image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600"
 },
 
 {
-id:23, name:"Fresh Lime Soda", price:50,
+id:23, name:"Fresh Limen Soda", price:50,
 category:"Drinks",
-description:"Refreshing fresh lime soda.",
+description:"Refreshing fresh limen soda.",
 type:"veg",
+hasCheese:false,
+hasSpice:false,
 image:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=600"
 },
 
@@ -618,6 +841,9 @@ id:24, name:"Chocolate Cake", price:249,
 category:"Desserts",
 description:"Delicious chocolate dessert.",
 type:"veg",
+hasCheese:false,
+hasSpice:false,
+hasChoco:true,
 image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600"
 },
 
@@ -626,6 +852,8 @@ id:25, name:"Ice Cream", price:60,
 category:"Desserts",
 description:"Sweet and creamy ice cream.",
 type:"veg",
+hasCheese:false,
+hasSpice:false,
 image:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600"
 }
 
@@ -728,25 +956,134 @@ function filterCategory(category, button) {
     renderMenu();
 }
 
-// ADD TO CART
+// MODAL STATE
+let modalFoodId    = null;
+let selectedSpice  = "Normal";
+let selectedCheese = { label: "Normal", extra: 0 };
 
+// ─── OPEN CUSTOMIZATION MODAL ─────────────────────────────────────────
 function addToCart(id) {
+    const food = foods.find(f => f.id === id);
+    if (!food) return;
 
-    const food = foods.find(item => item.id === id);
+    modalFoodId    = id;
+    selectedSpice  = "Normal";
+    selectedCheese = { label: "Normal", extra: 0 };
 
-    const existing = cart.find(item => item.id === id);
+    // Reset all option buttons
+    document.querySelectorAll(".spice-btn").forEach(b => b.classList.remove("selected"));
+    document.querySelectorAll(".cheese-btn").forEach(b => b.classList.remove("selected"));
+    document.querySelector('.cheese-btn[data-cheese="Normal"]').classList.add("selected");
 
-    if(existing) {
+    const spiceSection  = document.getElementById("spiceSection");
+    const chocoSection  = document.getElementById("chocoSection");
+    const cheeseSection = document.getElementById("cheeseSection");
+
+    // ── Spice / Choco logic ──────────────────────────────────────────
+    if (food.hasChoco) {
+        // Chocolate Cake → show chocolate level instead of spice
+        spiceSection.style.display = "none";
+        chocoSection.style.display = "block";
+        document.querySelectorAll("#chocoSection .spice-btn").forEach(b => b.classList.remove("selected"));
+        document.querySelector('.spice-btn[data-spice="Normal Choco"]').classList.add("selected");
+        selectedSpice = "Normal Choco";
+    } else if (food.hasSpice === false) {
+        // Cold Coffee, Fresh Limen Soda, Ice Cream → no spice
+        spiceSection.style.display = "none";
+        chocoSection.style.display = "none";
+        selectedSpice = "None";
+    } else {
+        // Normal food → spice selector
+        spiceSection.style.display = "block";
+        chocoSection.style.display = "none";
+        document.querySelector('.spice-btn[data-spice="Normal"]').classList.add("selected");
+        selectedSpice = "Normal";
+    }
+
+    // ── Cheese logic ─────────────────────────────────────────────────
+    if (food.hasCheese) {
+        cheeseSection.style.display = "block";
+        selectedCheese = { label: "Normal", extra: 0 };
+    } else {
+        cheeseSection.style.display = "none";
+        selectedCheese = { label: "None", extra: 0 };
+    }
+
+    document.getElementById("modalItemName").textContent  = "🍽️ " + food.name;
+    document.getElementById("modalItemPrice").textContent = "Base Price: ₹" + food.price;
+    updateModalButton(food.price);
+    document.getElementById("customModal").classList.add("active");
+}
+
+function closeModal() {
+    document.getElementById("customModal").classList.remove("active");
+    modalFoodId = null;
+}
+
+// Close on overlay click
+document.getElementById("customModal").addEventListener("click", function(e) {
+    if (e.target === this) closeModal();
+});
+
+// ─── SPICE SELECTION ─────────────────────────────────────────────────
+function selectSpice(btn) {
+    document.querySelectorAll(".spice-btn").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    selectedSpice = btn.dataset.spice;
+}
+
+// ─── CHEESE SELECTION ────────────────────────────────────────────────
+function selectCheese(btn) {
+    document.querySelectorAll(".cheese-btn").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    selectedCheese = { label: btn.dataset.cheese, extra: parseInt(btn.dataset.extra) };
+    const food = foods.find(f => f.id === modalFoodId);
+    if (food) updateModalButton(food.price);
+}
+
+function updateModalButton(basePrice) {
+    const total     = basePrice + selectedCheese.extra;
+    const extraText = selectedCheese.extra > 0 ? " (+₹" + selectedCheese.extra + " Cheese)" : "";
+    document.getElementById("modalAddBtn").textContent = "Add to Cart  ₹" + total + extraText + "  →";
+}
+
+// ─── CONFIRM ADD ──────────────────────────────────────────────────────
+function confirmAddToCart() {
+    const food = foods.find(f => f.id === modalFoodId);
+    if (!food) return;
+
+    const finalPrice = food.price + selectedCheese.extra;
+    const customKey  = food.id + "_" + selectedSpice + "_" + selectedCheese.label;
+    const existing   = cart.find(item => item.customKey === customKey);
+
+    if (existing) {
         existing.quantity++;
     } else {
         cart.push({
             ...food,
-            quantity:1
+            price:      finalPrice,
+            quantity:   1,
+            customKey:  customKey,
+            spice:      selectedSpice,
+            cheese:     selectedCheese.label,
+            extraCheese: selectedCheese.extra
         });
     }
 
+    closeModal();
     updateCart();
 
+    // Flash cart button green briefly
+    const btn = document.querySelector(".cart-button");
+    btn.style.background = "#218838";
+    setTimeout(() => btn.style.background = "#e88b26", 700);
+}
+
+// ─── SPICE EMOJI ──────────────────────────────────────────────────────
+function spiceEmoji(spice) {
+    if (spice === "Light") return "🟢";
+    if (spice === "High")  return "🔴";
+    return "🟡";
 }
 
 // UPDATE CART
@@ -754,7 +1091,6 @@ function addToCart(id) {
 function updateCart() {
 
     const cartItems = document.getElementById("cartItems");
-
     cartItems.innerHTML = "";
 
     let total = 0;
@@ -765,6 +1101,14 @@ function updateCart() {
         total += item.price * item.quantity;
         count += item.quantity;
 
+        const spiceTag  = item.spice === "None" ? "" :
+                          item.spice.includes("Choco") ? "🍫 " + item.spice :
+                          spiceEmoji(item.spice) + " " + item.spice + " Spice";
+        const cheeseTag = item.cheese === "None"  ? "" :
+                          item.cheese === "Extra" ? " &nbsp;•&nbsp; 🧀🧀 Extra Cheese (+₹25)" :
+                                                    " &nbsp;•&nbsp; 🧀 Normal Cheese";
+        const tagLine   = (spiceTag || cheeseTag) ? (spiceTag + cheeseTag) : "";
+
         cartItems.innerHTML += `
 
         <div class="cart-item">
@@ -772,21 +1116,22 @@ function updateCart() {
             <div>
                 <strong>${item.name}</strong>
                 <br>
+                ${tagLine ? `<small style="color:#888;">${tagLine}</small><br>` : ""}
                 ₹${item.price} × ${item.quantity}
             </div>
 
             <div class="quantity">
 
-                <button onclick="changeQty(${item.id},-1)">−</button>
+                <button onclick="changeQty('${item.customKey}',-1)">−</button>
 
                 ${item.quantity}
 
-                <button onclick="changeQty(${item.id},1)">+</button>
+                <button onclick="changeQty('${item.customKey}',1)">+</button>
 
             </div>
 
             <button class="remove-btn"
-                onclick="removeItem(${item.id})">
+                onclick="removeItem('${item.customKey}')">
                 Remove
             </button>
 
@@ -796,10 +1141,9 @@ function updateCart() {
     });
 
     document.getElementById("totalPrice").innerText = total;
+    document.getElementById("cartCount").innerText  = count;
 
-    document.getElementById("cartCount").innerText = count;
-
-    if(cart.length === 0) {
+    if (cart.length === 0) {
         cartItems.innerHTML = "<p>Your cart is empty.</p>";
     }
 
@@ -807,16 +1151,15 @@ function updateCart() {
 
 // CHANGE QUANTITY
 
-function changeQty(id, change) {
+function changeQty(customKey, change) {
 
-    const item = cart.find(item => item.id === id);
-
-    if(!item) return;
+    const item = cart.find(item => item.customKey === customKey);
+    if (!item) return;
 
     item.quantity += change;
 
-    if(item.quantity <= 0) {
-        cart = cart.filter(item => item.id !== id);
+    if (item.quantity <= 0) {
+        cart = cart.filter(item => item.customKey !== customKey);
     }
 
     updateCart();
@@ -824,10 +1167,8 @@ function changeQty(id, change) {
 
 // REMOVE ITEM
 
-function removeItem(id) {
-
-    cart = cart.filter(item => item.id !== id);
-
+function removeItem(customKey) {
+    cart = cart.filter(item => item.customKey !== customKey);
     updateCart();
 }
 
@@ -858,7 +1199,11 @@ function checkout() {
     }
 
     let orderDetails = cart.map(item =>
-        item.name + " x " + item.quantity
+        item.name + " x " + item.quantity +
+        "  [" + spiceEmoji(item.spice) + " " + item.spice + " Spice" +
+        (item.cheese === "None" ? "" :
+         item.cheese === "Extra" ? ", Extra Cheese +₹25" : ", Normal Cheese") +
+        "]"
     ).join("\n");
 
     let total = cart.reduce(
@@ -866,10 +1211,10 @@ function checkout() {
     );
 
     alert(
-        "Your Order Summary\n\n" +
+        "🍽️ Your Order Summary\n\n" +
         orderDetails +
         "\n\nTotal Amount: ₹" + total +
-        "\n\nDemo order placed successfully!"
+        "\n\nDemo order placed successfully! 🎉"
     );
 
 }
